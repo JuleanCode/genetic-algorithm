@@ -1,69 +1,64 @@
-import numpy as np
-from sklearn.neural_network import MLPRegressor
+import tensorflow as tf
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import mean_squared_error
 import random
 import pandas as pd
 
-# Laad de dataset vanuit een txt-bestand (zorg ervoor dat 'jouw_dataset.txt' naar het juiste pad wijst)
 data = pd.read_csv('diabetes.txt', sep='\t')
 
-# Scheid de kenmerken (X) en het doel (Y)
-X = data.iloc[:, :-1]
-Y = data.iloc[:, -1]
+selected_columns = ['SEX', 'AGE', 'BMI', 'Y']
+data = data[selected_columns]
 
-# Normaliseer de gegevens
+X = data[['SEX', 'AGE', 'BMI']]
+Y = data['Y']
+
+# Normaliseren van de data
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
-# Deel de dataset op in een trainingsset en een testset
+# Dataset opdelen in een train en test set
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
-# Definieer evaluatiefunctie voor regressie
-def evaluate_regression_mlp(hyperparameters):
-    reg = MLPRegressor(**hyperparameters)
-    reg.max_iter = 2000  # Verhoog het maximum aantal iteraties
-    reg.fit(X_train, Y_train)
-    Y_pred = reg.predict(X_test)
+def evaluate_regression_nn(model, X_train, Y_train, X_test, Y_test):
+    model.fit(X_train, Y_train, epochs=100, verbose=0, batch_size=32)
+    Y_pred = model.predict(X_test)
     mse = mean_squared_error(Y_test, Y_pred)
     return mse
 
-# Genereer willekeurige hyperparameters als individuen in de populatie
-def generate_random_hyperparameters():
-    hyperparameters = {
-        'hidden_layer_sizes': (random.randint(5, 50),),
-        'activation': random.choice(['logistic', 'tanh', 'relu']),
-        'alpha': 10.0 ** -np.random.uniform(1, 6)
-    }
-    return hyperparameters
+def generate_random_nn_model():
+    model = tf.keras.Sequential([
+        tf.keras.layers.Dense(16, activation='relu', input_shape=(3,)),
+        tf.keras.layers.Dropout(0.2),  # Voeg een dropout-laag toe met dropout van 20%
+        tf.keras.layers.Dense(8, activation='relu'),
+        tf.keras.layers.Dense(1)
+    ])
+    model.compile(optimizer='adam', loss='mean_squared_error')
+    return model
 
-# Genetisch algoritme en de rest van de code blijven hetzelfde
-
-# Voer het genetisch algoritme uit om de beste hyperparameters te vinden
+# TODO!!!       aanpassen zodat die door de gebruiker opgegeven kan worden
 population_size = 10
 num_generations = 20
 mutation_rate = 0.1
 
-best_hyperparameters = None
+best_model = None
 best_mse = float('inf')
 
 for generation in range(num_generations):
-    population = [generate_random_hyperparameters() for _ in range(population_size)]
+    population = [generate_random_nn_model() for _ in range(population_size)]
 
-    for hyperparameters in population:
-        mse = evaluate_regression_mlp(hyperparameters)
+    for model in population:
+        mse = evaluate_regression_nn(model, X_train, Y_train, X_test, Y_test)
         
         if mse < best_mse:
             best_mse = mse
-            best_hyperparameters = hyperparameters
+            best_model = model
     
-    # Mutatie: Voer mutatie uit op sommige individuen
     for i in range(int(population_size * mutation_rate)):
-        random_individual = random.choice(population)
-        mutated_individual = generate_random_hyperparameters()
-        population.remove(random_individual)
-        population.append(mutated_individual)
+        random_model = random.choice(population)
+        mutated_model = generate_random_nn_model()
+        population.remove(random_model)
+        population.append(mutated_model)
 
-print("Best Hyperparameters:", best_hyperparameters)
+print("Best Model:", best_model.summary())
 print("Best Mean Squared Error:", best_mse)
