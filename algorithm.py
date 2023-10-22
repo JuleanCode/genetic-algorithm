@@ -5,6 +5,14 @@ from sklearn.metrics import mean_squared_error
 import random
 import pandas as pd
 
+# Schakel de GPU uit
+tf.config.set_visible_devices([], 'GPU')
+
+# Forceer CPU-gebruik voor alle bewerkingen (code werkt sneller op CPU)
+tf.config.experimental.set_visible_devices([], 'GPU')
+tf.config.set_visible_devices([], 'GPU')
+
+
 data = pd.read_csv('diabetes.txt', sep='\t')
 
 selected_columns = ['SEX', 'AGE', 'BMI', 'Y']
