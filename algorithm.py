@@ -2,8 +2,11 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
+from sklearn.neural_network import MLPClassifier
 import random
 import pandas as pd
+
+
 
 # Schakel de GPU uit
 tf.config.set_visible_devices([], 'GPU')
@@ -44,7 +47,7 @@ def generate_random_nn_model():
     model.compile(optimizer='adam', loss='mean_squared_error')
     return model
 
-# TODO!!!       aanpassen zodat die door de gebruiker opgegeven kan worden
+# TODO!!!       aanpassen zodat die door de gebruiker opgegeven kan worden. MLPClassifier gebruiken??
 population_size = 10
 num_generations = 20
 mutation_rate = 0.1
