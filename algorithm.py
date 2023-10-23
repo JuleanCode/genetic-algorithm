@@ -71,9 +71,7 @@ for i in range(number):
         learning = random.choice(learning_rate)
 
         accuracyNN = fitness(function,layers,learning)
-
-        # print(accuracyNN)
-
+       
         if accuracyNN != 1.0: #We don't want the parent to be optimal yet!
             network.append(accuracyNN)
             network.append(function)
@@ -110,11 +108,11 @@ while loop == True:
                 loop = False
                 break
             elif accuracy > total[0][0]:
-                print('score of the child is better than parents','\n')
+                print('score  child > parents','\n')
             elif accuracy == total[0][0]:
-                print('score of the child is equal to that of one parent','\n')
+                print('score child == to that of one parent','\n')
             else:
-                print('The score of child',i," isn't higher than or, equal to, the score of the best parent",'\n')
+                print('The score of child',i," < the score of the best parent",'\n')
                 new = mutation(str(child[0]),int(child[1]),str(child[2]))
                 if new == 1.0:
                     print('This child performs optimal, the score is ',new,'\n')
