@@ -64,15 +64,11 @@ for i in range(number):
         network = []
         functions = ['identity', 'logistic', 'tanh', 'relu']
         function = random.choice(functions)
-
         layers = random.randrange(1,100)
-
         learning_rate = ['constant','invscaling','adaptive']
         learning = random.choice(learning_rate)
-
+        
         accuracyNN = fitness(function,layers,learning)
-
-        # print(accuracyNN)
 
         if accuracyNN != 1.0: #We don't want the parent to be optimal yet!
             network.append(accuracyNN)
