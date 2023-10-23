@@ -46,7 +46,7 @@ def mutation(function,layers,learning):
         layers = random.randrange(1,100)
 
     while gen == learning:
-        learning = random.choice(learning_rates)
+        learning = random.choice(learning_rate)
         
     print("The new features are: ['", function,"' '",layers,"' '",learning,"']")
     accuracy = fitness(function,layers,learning)
@@ -67,8 +67,8 @@ for i in range(number):
 
         layers = random.randrange(1,100)
 
-        learning_rates = ['constant','invscaling','adaptive']
-        learning = random.choice(learning_rates)
+        learning_rate = ['constant','invscaling','adaptive']
+        learning = random.choice(learning_rate)
 
         accuracyNN = fitness(function,layers,learning)
 
@@ -85,7 +85,7 @@ for i in range(number):
 
 total.sort(reverse=True)
 
-print('The number if parents:',number,', there accurac is: \n')
+print('The number if parents:',number,', accuracy: \n')
 
 for j in range(0,number):
     print(total[j][0])
@@ -99,37 +99,37 @@ while loop == True:
 
         i = 1
         for child in features_childs:
-            print('\nfeatures of the child:',i,': ',child)
+            print('\nfeatures child:',i,': ',child)
             accuracy = fitness(str(child[0]),int(child[1]),str(child[2]))
-            print('The accuracy: ',accuracy)
-            print('The features of the parents:', total[0][1:4],'and',total[1][1:4])
-            print('The accuracy score: ',total[0][0],' and ', total[1][0])
+            print('score: ',accuracy)
+            print('features parents:', total[0][1:4],'and',total[1][1:4])
+            print('score: ',total[0][0],' and ', total[1][0])
 
             if accuracy == 1.0:
-                print('This child: ',child,'is optimal','\n')
+                print('child: ',child,'is optimal','\n')
                 loop = False
                 break
             elif accuracy > total[0][0]:
-                print('The score of the child is better than the parents','\n')
+                print('score of the child is better than parents','\n')
             elif accuracy == total[0][0]:
-                print('The score of the child is equal to that of one parent','\n')
+                print('score of the child is equal to that of one parent','\n')
             else:
                 print('The score of child',i," isn't higher than or, equal to, the score of the best parent",'\n')
-                new_accuracy = mutation(str(child[0]),int(child[1]),str(child[2]))
-                if new_accuracy == 1.0:
-                    print('This child performs optimal, the score is ',new_accuracy,'\n')
+                new = mutation(str(child[0]),int(child[1]),str(child[2]))
+                if new == 1.0:
+                    print('This child performs optimal, the score is ',new,'\n')
                     loop = False
                     break
-                elif new_accuracy > total[0][0]:
-                    print('The new score of the child is ',new_accuracy,', tscore is beter than the parents','\n')
-                elif new_accuracy == total[0][0]:
-                    print('The new score of the child is ',new_accuracy,', soore is the same as the parents','\n')
+                elif new > total[0][0]:
+                    print('score child is ',new,', score > parents','\n')
+                elif new == total[0][0]:
+                    print('score child is ',new,', soore == parents','\n')
                 else:
-                    print('The new score of the child is ',new_accuracy,', score not beter than the parents','\n')
+                    print('score child is ',new,', score < parents','\n')
             i += 1
         parent = j + 1
-        print('\n crossover between the 1st and the',parent,"the childs weren't optimal")
+        print('\n crossover is 1st and the',parent,"the childs weren't optimal")
         j += 1
     else:
-        print('\n no optimal child found..')
+        print('\n no optimal child')
         loop = False
