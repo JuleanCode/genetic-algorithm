@@ -8,11 +8,11 @@ import numpy as np
 
 data = pd.read_csv('diabetes.txt', sep='\t')
 
-selected_columns = ['SEX', 'AGE', 'BMI', 'Y']
+selected_columns = ['SEX', 'AGE', 'BMI','BP','S1','S2','S3','S4','S5','S6', 'Y']
 data = data[selected_columns]
 
-X = data[['SEX', 'AGE', 'BMI']]
-Y = data['Y']
+X = data[['SEX','BMI','BP','S1','S2','S3','S4','S5','S6', 'Y']]
+Y = data['AGE']
 
 # Normaliseren van de data
 scaler = StandardScaler()
@@ -22,7 +22,7 @@ X = scaler.fit_transform(X)
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
 def NN(function,layers,learning):
-    return MLPClassifier(activation = function, hidden_layer_sizes = layers, learning_rate = learning, random_state = 1, max_iter = 500).fit(X_train, Y_train)
+    return MLPClassifier(activation = function, hidden_layer_sizes = layers, learning_rate = learning, random_state = 1, max_iter = 5000).fit(X_train, Y_train)
 
 def fitness(function,layers,learning):
     network = NN(function,layers,learning)
