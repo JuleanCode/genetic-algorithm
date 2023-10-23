@@ -11,8 +11,8 @@ data = pd.read_csv('diabetes.txt', sep='\t')
 selected_columns = ['SEX', 'AGE', 'BMI','BP','S1','S2','S3','S4','S5','S6', 'Y']
 data = data[selected_columns]
 
-X = data[['SEX', 'AGE','BMI','BP','S1','S2','S3','S4','S5','S6',]]
-Y = data['Y']
+X = data[['SEX', 'Y','BMI','BP','S1','S2','S3','S4','S5','S6',]]
+Y = data['AGE']
 
 # Normaliseren van de data
 scaler = StandardScaler()
