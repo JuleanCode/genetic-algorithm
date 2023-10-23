@@ -2,14 +2,15 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
+
 import random
 import pandas as pd
 import numpy as np
 
 data = pd.read_csv('diabetes.txt', sep='\t')
 
-selected_columns = ['SEX', 'AGE', 'BMI','BP','S1','S2','S3','S4','S5','S6', 'Y']
-data = data[selected_columns]
+columns = ['SEX', 'AGE', 'BMI','BP','S1','S2','S3','S4','S5','S6', 'Y']
+data = data[columns]
 
 X = data[['SEX', 'Y','BMI','BP','S1','S2','S3','S4','S5','S6',]]
 Y = data['AGE']
@@ -84,7 +85,7 @@ for i in range(number):
 
 total.sort(reverse=True)
 
-print('The number if parents:',number,', there accuracys of them is: \n')
+print('The number if parents:',number,', there accurac is: \n')
 
 for j in range(0,number):
     print(total[j][0])
